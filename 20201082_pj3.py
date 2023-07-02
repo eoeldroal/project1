@@ -44,36 +44,6 @@ def draw(M, points, color=(0,0,0), p0=None):
     if p0 is not None:
         pygame.draw.line(screen, (0,0,0), p0, points_transformed[0])
         
-def draw_robot(x, y, width, height):
-    # Draw the body
-    body_height = height * 0.6
-    body_width = width * 0.6
-    body_x = x + width * 0.2
-    body_y = y + height * 0.4
-    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(body_x, body_y, body_width, body_height))
-
-    # Draw the head
-    head_radius = width * 0.2
-    head_x = x + width / 2
-    head_y = y + height * 0.2
-    pygame.draw.circle(screen, (0, 0, 0), (int(head_x), int(head_y)), int(head_radius))
-
-    # Draw the arms
-    arm_length = height * 0.3
-    arm_y = y + height * 0.5
-    left_arm_x = x
-    right_arm_x = x + width
-    pygame.draw.line(screen, (0, 0, 0), (int(left_arm_x), int(arm_y)), (int(body_x), int(arm_y)), 3)
-    pygame.draw.line(screen, (0, 0, 0), (int(right_arm_x), int(arm_y)), (int(body_x + body_width), int(arm_y)), 3)
-
-    # Draw the legs
-    leg_length = height * 0.3
-    leg_y = y + height
-    left_leg_x = x + width * 0.3
-    right_leg_x = x + width * 0.7
-    pygame.draw.line(screen, (0, 0, 0), (int(left_leg_x), int(body_y + body_height)), (int(left_leg_x), int(leg_y)), 3)
-    pygame.draw.line(screen, (0, 0, 0), (int(right_leg_x), int(body_y + body_height)), (int(right_leg_x), int(leg_y)), 3)
-
 
 pygame.init()
 WINDOW_WIDTH = 1600
@@ -119,7 +89,6 @@ while not done:
                 Arm_ang -= 5
                 
     screen.fill((255,255,255))
-    draw_robot(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 100, 200)
     
     i = 0
     for center1, arm in zip(centers, arms):

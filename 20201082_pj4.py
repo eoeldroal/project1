@@ -46,7 +46,28 @@ def draw(M, points, color=(0,0,0), p0=None):
     pygame.draw.polygon(screen, color, points_transformed)
     if p0 is not None:
         pygame.draw.line(screen, (0,0,0), p0, points_transformed[0])
+# 위에서 생성한 정다각형 도형과 여러 행렬을 응용하여 도형을 그려주는 함수이다.
         
+# class planet() :
+#     def __init__(self, center, angle_planet, dist, shape)  :
+#         self.center = center
+#         self.angle_planet = angle_planet
+#         self.dist = dist
+#         self.shape = shape
+#         self.angle = 0
+        
+#     def update(self, returncen = False) :
+#         self.angle += self.angle_planet
+#         self.center = np.array([self.center[0] + 2*self.dist*np.cos(np.deg2rad(self.angle)) , self.center[1] + self.dist*np.sin(np.deg2rad(self.angle))])
+#         if returncen == True :
+#             return self.center
+#         self.Msun = Tmat(self.center[0], self.center[1]) @ Rmat(self.angle)
+    
+#     def draw(self,) :
+#         pygame.draw.ellipse(screen, (255,255,255), pygame.Rect(self.center[0]-2*self.dist, self.center[1]-self.dist, 4*self.dist, 2*self.dist),2)
+#         draw(self.Msun, self.shape, (255, 255, 100), self.center)
+        
+
 
 WINDOW_WIDTH = 1600
 WINDOW_HEIGHT = 900
@@ -83,16 +104,52 @@ keys = {
     "right": False,
 }
 
+loc1 = 100
+loc2 = WINDOW_WIDTH/2
+sq_size = 20
+SPEED = 5
+
+R = []
+
 m1 = None
 done = False
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                keys["up"] = True
+            elif event.key == pygame.K_DOWN:
+                keys["down"] = True
+            elif event.key == pygame.K_LEFT:
+                keys["left"] = True
+            elif event.key == pygame.K_RIGHT:
+                keys["right"] = True
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_UP:
+                keys["up"] = False
+            elif event.key == pygame.K_DOWN:
+                keys["down"] = False
+            elif event.key == pygame.K_LEFT:
+                keys["left"] = False
+            elif event.key == pygame.K_RIGHT:
+                keys["right"] = False
+                
+    if keys["up"]:
+        loc2 -= SPEED
+    if keys["down"]:
+        loc2 += SPEED
+    if keys["left"]:
+        loc1 -= SPEED
+    if keys["right"]:
+        loc1 += SPEED
         
     Iscollide = False
             
     screen.fill(GRAY)
+    
+    rocket = pygame.Rect(loc1, loc2, sq_size, sq_size)
     
     angle_sun += 3/10.
     angle_planet1 += 5/10.
@@ -128,6 +185,35 @@ while not done:
     planet1_rect = pygame.Rect(P1_CENTER[0] - 20, P1_CENTER[1] - 20, 40, 40)
     moon1_rect = pygame.Rect(M1_CENTER[0] - 10, M1_CENTER[1] - 10, 20, 20)
     planet2_rect = pygame.Rect(P2_CENTER[0] - 25, P2_CENTER[1] - 25, 50, 50)
+
+    if rocket.colliderect(sun_rect):
+        Iscollide = True
+        sq_size += 20
+        
+    if rocket.colliderect(planet1_rect) or rocket.colliderect(moon1_rect) or rocket.colliderect(planet2_rect):
+        sq_size /= 2
+        Iscollide = True
+        loc1_s = loc1
+        loc2_s = loc2
+        piece1 = pygame.Rect(loc1_s, loc2_s, sq_size // 3, sq_size // 3)
+        piece2 = pygame.Rect(loc1_s + sq_size // 3, loc2_s, sq_size // 3, sq_size // 3)
+        piece3 = pygame.Rect(loc1_s + 2 * sq_size // 3, loc2_s, sq_size // 3, sq_size // 3)
+        
+        velocities = [np.random.uniform(-5, 5, size=2) for _ in range(3)]
+        
+        R+=list(zip([piece1, piece2, piece3],velocities))
+
+    if Iscollide == True : 
+        loc1 = 100
+        loc2 = WINDOW_WIDTH/2
+        Iscollide = False  
+    
+    pygame.draw.rect(screen, BLACK, rocket)
+    
+    for p, v in R:
+        p.x += v[0]
+        p.y += v[1]
+        pygame.draw.rect(screen, BLACK, p)
     
     pygame.display.flip()
     clock.tick(60)
