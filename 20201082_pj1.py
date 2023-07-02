@@ -19,7 +19,7 @@ LENGTH_SECOND = 200.
 
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
-class Rocket(pygame.sprite.Sprite):
+class Rocket():
     def __init__(self, x):
         super().__init__()
         self.image = pygame.image.load("C:\\Users\\eoeld\\Downloads\\rocket_im.png")  # Load an image
