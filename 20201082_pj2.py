@@ -76,13 +76,6 @@ angle_planet2 = 0.
 dist_C_P2 = 150.
 Planet2 = getRegularPolygon(40, 25)
 
-keys = {
-    "up": False,
-    "down": False,
-    "left": False,
-    "right": False,
-}
-
 m1 = None
 done = False
 while not done:
