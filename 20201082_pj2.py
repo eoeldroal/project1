@@ -115,11 +115,6 @@ while not done:
     Mplanet2 = Tmat(P2_CENTER[0], P2_CENTER[1]) @ Rmat(angle_planet2)
     draw(Mplanet2, Planet2, (255, 255, 100), P2_CENTER)
     
-    sun_rect = pygame.Rect(CENTER[0] - 30, CENTER[1] - 30, 60, 60)
-    planet1_rect = pygame.Rect(P1_CENTER[0] - 20, P1_CENTER[1] - 20, 40, 40)
-    moon1_rect = pygame.Rect(M1_CENTER[0] - 10, M1_CENTER[1] - 10, 20, 20)
-    planet2_rect = pygame.Rect(P2_CENTER[0] - 25, P2_CENTER[1] - 25, 50, 50)
-    
     pygame.display.flip()
     clock.tick(60)
     
