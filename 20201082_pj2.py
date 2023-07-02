@@ -72,8 +72,12 @@ angle_moon1 = 0.
 dist_P1_M = 40.
 Moon1 = getRegularPolygon(40, 10)
 
+angle_moon2 = -90.
+dist_P1_M2 = 60.
+Moon2 = getRegularPolygon(40, 10)
+
 angle_planet2 = 0.
-dist_C_P2 = 150.
+dist_C_P2 = 250.
 Planet2 = getRegularPolygon(40, 25)
 
 m1 = None
@@ -82,6 +86,7 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
+        
             
     screen.fill(GRAY)
     
@@ -89,11 +94,12 @@ while not done:
     angle_planet1 += 5/10.
     angle_planet2 += 6/10.
     angle_moon1 += 10/10.
-    angle_m1 = 1
+    angle_moon2 += 9/10.
     
     CENTER = np.array([WINDOW_WIDTH/2. , WINDOW_HEIGHT/2.])
     P1_CENTER = np.array([WINDOW_WIDTH/2. + 2*dist_C_P1*np.cos(np.deg2rad(angle_planet1)) , WINDOW_HEIGHT/2. + dist_C_P1*np.sin(np.deg2rad(angle_planet1))])
     M1_CENTER = np.array([P1_CENTER[0] + 2*dist_P1_M*np.cos(np.deg2rad(angle_moon1)) , P1_CENTER[1] + dist_P1_M*np.sin(np.deg2rad(angle_moon1))])
+    M2_CENTER = np.array([P1_CENTER[0] + 2*dist_P1_M2*np.cos(np.deg2rad(angle_moon2)) , P1_CENTER[1] + dist_P1_M2*np.sin(np.deg2rad(angle_moon2))])
     P2_CENTER = np.array([WINDOW_WIDTH/2. + 2.5*dist_C_P2*np.cos(np.deg2rad(angle_planet2)) , WINDOW_HEIGHT/2. + dist_C_P2*np.sin(np.deg2rad(angle_planet2))])
     
     Msun = Tmat(CENTER[0], CENTER[1]) @ Rmat(angle_sun)
@@ -111,7 +117,11 @@ while not done:
     Mmoon1 = Tmat(M1_CENTER[0], M1_CENTER[1]) @ Rmat(angle_moon1)
     draw(Mmoon1, Moon1, (255, 255, 100), M1_CENTER)
     
-    pygame.draw.ellipse(screen, (255,255,255), pygame.Rect(CENTER[0]-375,CENTER[1]-150, 750, 300),2)
+    pygame.draw.ellipse(screen, (255,255,255), pygame.Rect(P1_CENTER[0]-120,P1_CENTER[1]-60, 240, 120),2)
+    Mmoon2 = Tmat(M2_CENTER[0], M2_CENTER[1]) @ Rmat(angle_moon1)
+    draw(Mmoon2, Moon2, (255, 255, 100), M2_CENTER)
+    
+    pygame.draw.ellipse(screen, (255,255,255), pygame.Rect(CENTER[0]-625,CENTER[1]-250, 1250, 500),2)
     Mplanet2 = Tmat(P2_CENTER[0], P2_CENTER[1]) @ Rmat(angle_planet2)
     draw(Mplanet2, Planet2, (255, 255, 100), P2_CENTER)
     
