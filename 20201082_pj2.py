@@ -76,6 +76,10 @@ angle_moon2 = -90.
 dist_P1_M2 = 60.
 Moon2 = getRegularPolygon(40, 10)
 
+angle_moon3 = 0.
+dist_M1_M3 = 20.
+Moon3 = getRegularPolygon(40, 5)
+
 angle_planet2 = 0.
 dist_C_P2 = 250.
 Planet2 = getRegularPolygon(40, 25)
@@ -95,12 +99,14 @@ while not done:
     angle_planet2 += 6/10.
     angle_moon1 += 10/10.
     angle_moon2 += 9/10.
+    angle_moon3 += 7/10.
     
     CENTER = np.array([WINDOW_WIDTH/2. , WINDOW_HEIGHT/2.])
     P1_CENTER = np.array([WINDOW_WIDTH/2. + 2*dist_C_P1*np.cos(np.deg2rad(angle_planet1)) , WINDOW_HEIGHT/2. + dist_C_P1*np.sin(np.deg2rad(angle_planet1))])
     M1_CENTER = np.array([P1_CENTER[0] + 2*dist_P1_M*np.cos(np.deg2rad(angle_moon1)) , P1_CENTER[1] + dist_P1_M*np.sin(np.deg2rad(angle_moon1))])
     M2_CENTER = np.array([P1_CENTER[0] + 2*dist_P1_M2*np.cos(np.deg2rad(angle_moon2)) , P1_CENTER[1] + dist_P1_M2*np.sin(np.deg2rad(angle_moon2))])
     P2_CENTER = np.array([WINDOW_WIDTH/2. + 2.5*dist_C_P2*np.cos(np.deg2rad(angle_planet2)) , WINDOW_HEIGHT/2. + dist_C_P2*np.sin(np.deg2rad(angle_planet2))])
+    M3_CENTER = np.array([M1_CENTER[0] + 2*dist_M1_M3*np.cos(np.deg2rad(angle_moon3)) , M1_CENTER[1] + dist_M1_M3*np.sin(np.deg2rad(angle_moon3))])
     
     Msun = Tmat(CENTER[0], CENTER[1]) @ Rmat(angle_sun)
     draw(Msun, Sun, (255, 255, 100), CENTER)
@@ -124,6 +130,10 @@ while not done:
     pygame.draw.ellipse(screen, (255,255,255), pygame.Rect(CENTER[0]-625,CENTER[1]-250, 1250, 500),2)
     Mplanet2 = Tmat(P2_CENTER[0], P2_CENTER[1]) @ Rmat(angle_planet2)
     draw(Mplanet2, Planet2, (255, 255, 100), P2_CENTER)
+    
+    pygame.draw.ellipse(screen, (255,255,255), pygame.Rect(M1_CENTER[0]-40,M1_CENTER[1]-20, 80, 40),2)
+    Mmoon3 = Tmat(M3_CENTER[0], M3_CENTER[1]) @ Rmat(angle_moon3)
+    draw(Mmoon3, Moon3, (255, 255, 100), M3_CENTER)
     
     pygame.display.flip()
     clock.tick(60)
